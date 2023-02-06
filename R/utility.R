@@ -10,13 +10,13 @@
 #' is_border <- rep(1, Rvcg::nfaces(dkmodel$cusp))
 #' is_border[border] <- 2
 #' dkmap(dkmodel$cusp, is_border, col = c("white", "#E69F00"), col.levels = 2, legend = FALSE,
-#' scalebar = FALSE)
+#' scalebar = FALSE, smooth = FALSE)
 #'
 #' # Compare with vcgBorder from the R package Rvcg, in blue:
 #' vcgborder <- which(Rvcg::vcgBorder(dkmodel$cusp)$borderit == TRUE)
 #' is_border[vcgborder] <- 3
 #' dkmap(dkmodel$cusp, is_border, col = c("white", "#E69F00", "#56B4E9"), col.levels = 3,
-#' legend = FALSE, scalebar = FALSE)
+#' legend = FALSE, scalebar = FALSE, smooth = FALSE)
 #' #As you can see, it all depends on what you want to select!
 #'
 #' @export
@@ -68,12 +68,12 @@ dkborder <- function(mesh){
 dkcrop <- function(mesh, y){
   # Perform various checks:
   if (!isa(mesh, what = "mesh3d")) stop("mesh must be an object of class 'mesh3d'")
-  if (!is.vector(y) & !is.integer(y) & !isa(x = y, what = "polygon.network")) stop("y should be a vector of integers or an object of class 'polygon.network'")
+  if (!is.vector(y) & !is.integer(y) & !isa(y, what = "polygon.network")) stop("y should be a vector of integers or an object of class 'polygon.network'")
   if (is.vector(y)) {
     if(max(y) > Rvcg::nfaces(mesh)) stop(paste("maximum y (", max(y),") is larger than mesh face count (", Rvcg::nfaces(mesh), ")" ))
   }
   # Main job
-  if (isa(x = y, what = "polygon.network")) y <- y@faces
+  if (isa(y, what = "polygon.network")) y <- y@faces
   Croppedit <- sort(unique(c(mesh$it[, y])))
   Newvb <- mesh$vb[, Croppedit]
   dd <- data.frame(oldits = Croppedit, newits = c(1:length(Croppedit)))
@@ -177,9 +177,9 @@ dkmap <- function(mesh, y,  alpha = 1, alpha.above = TRUE, alpha.faces = NULL, a
 
   # Perform various checks:
   if (!isa(mesh, what = "mesh3d")) stop("mesh must be an object of class 'mesh3d'")
-  if (!isa(x = y, what = "numeric") | !is.vector(y)) stop("y must be a numeric vector")
+  if (!isa(y, what = "numeric") | !is.vector(y)) stop("y must be a numeric vector")
   if (!is.null(alpha.faces) & !is.null(alpha.thresh)) stop("use either alpha.faces or alpha.thresh")
-  if (!is.null(alpha.faces) & (!isa(x = alpha.faces, what = "integer") | !is.vector(alpha.faces))) stop("alpha.faces must be a vector of integers")
+  if (!is.null(alpha.faces) & (!isa(alpha.faces, what = "integer") | !is.vector(alpha.faces))) stop("alpha.faces must be a vector of integers")
   # Define colors
   Colrange <- col
   if (isTRUE(Colrange == "angularity")) Colrange <- c("white", "black")
@@ -237,7 +237,7 @@ dkmap <- function(mesh, y,  alpha = 1, alpha.above = TRUE, alpha.faces = NULL, a
 
   if (lit) {
     # Light: 3 points lightning (https://fr.wikipedia.org/wiki/%C3%89clairage_trois_points)
-    rgl::rgl.clear("lights") #sets the lights off
+    rgl::clear3d("lights") #sets the lights off
     ##key light
     rgl::light3d(specular = "black", diffuse = "grey50", ambient = "grey50", theta = 330, phi = 330)
     ##fill light
@@ -419,6 +419,7 @@ dkprofile <- function (x, type = 'cartesian', xlab = paste("cumulated frequency 
 #' dkmap(leveled, doolkit::elev(leveled), col = "elev", legend.lab = "Elevation (mm)")
 #' @export
 dkorigin <- function(mesh){
+  if (!isa(mesh, what = "mesh3d")) stop("mesh must be an object of class 'mesh3d'")
   Mesh <- mesh
   Mesh$vb[3, ] <- Mesh$vb[3, ] - min(mesh$vb[3, ])
   return(Mesh)
@@ -431,7 +432,8 @@ dkorigin <- function(mesh){
 #' @return sets the orientation of the 'rgl' window.
 #' @seealso \code{\link{dkmap}}
 #' @examples
-#' dkmap(dkmodel$cusp, inclin(dkmodel$cusp), col = "inclin", min.range = 0, max.range = 180)
+#' inclinCusp <- inclin(dkmodel$cusp)
+#' dkmap(dkmodel$cusp, inclinCusp, col = "inclin", min.range = 0, max.range = 180)
 #' dksetview()
 #' #possible orientations are "distal", "left", "occlusal", "mesial" and "right"
 #' @export

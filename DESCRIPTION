@@ -1,6 +1,6 @@
 Package: doolkit
 Title: Exploration of Dental Surface Topography
-Version: 1.42.1
+Version: 1.42.2
 Authors@R: c(
     person(given = "Ghislain", family = "Thiery", role = c("aut", "cre"), email = "ghislain.thiery@ntymail.com"),
     person(given = "Franck", family = "Guy", role = c("aut"), email = "franck.guy@univ-poitiers.fr"),
@@ -29,15 +29,15 @@ Description: Tools for exploring the topography of 3d triangle meshes.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 4.1.0)
-RoxygenNote: 7.1.2
+Depends: R (>= 4.2.0)
+RoxygenNote: 7.2.1
 Imports: ggplot2, igraph, Morpho, rgl, Rvcg, sp, MASS, tis, methods,
         concaveman, usethis
 NeedsCompilation: no
-Packaged: 2022-05-13 22:31:00 UTC; Ghislain
+Packaged: 2023-02-06 01:56:25 UTC; ghisl
 Author: Ghislain Thiery [aut, cre],
   Franck Guy [aut],
   Vincent Lazzari [aut]
 Maintainer: Ghislain Thiery <ghislain.thiery@ntymail.com>
 Repository: CRAN
-Date/Publication: 2022-05-14 06:10:09 UTC
+Date/Publication: 2023-02-06 08:22:34 UTC

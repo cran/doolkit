@@ -21,8 +21,13 @@ A single relief index value.
 \description{
 Compute the relief index of a  3d triangle mesh.
 }
+\details{
+As of version 1.42.2, the concave hull fails intermittently on Mac systems, so the function
+defaults to convex hulls (on other systems, it defaults to concave hulls).
+}
 \examples{
-rfi <- rfi(dkmodel$cusp, method = "Ungar")
+rfi <- rfi(dkmodel$cusp, method = "Ungar", hull = "convex")
+lrfi <- rfi(dkmodel$cusp, method = "Boyer", hull = "convex")
 gamma <- rfi(dkmodel$cusp, method = "Guy")
 }
 \references{
@@ -32,4 +37,6 @@ gamma <- rfi(dkmodel$cusp, method = "Guy")
 }
 \seealso{
 \code{\link{area2d}}
+
+\code{\link[molaR]{RFI}}
 }
